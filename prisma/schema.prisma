@@ -13,7 +13,7 @@ datasource db {
 model User {
   id         String   @id @default(uuid())
   name       String
-  email      String
+  email      String @unique
   password   String
   Access     Access?  @relation(fields: [accessId], references: [id])
   accessId   String?
@@ -23,7 +23,7 @@ model User {
 
 model Access {
   id         String   @id @default(uuid())
-  name       String
+  name       String   @unique
   user       User[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -41,9 +41,9 @@ model Product {
 }
 
 model Store {
-  id      String    @id @default(uuid())
-  name    String
-  Product Product[]
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id         String    @id @default(uuid())
+  name       String
+  Product    Product[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 }

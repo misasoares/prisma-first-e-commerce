@@ -41,13 +41,13 @@ export const getAllStore = async (req: Request, res: Response) => {
         },
       },
       Product: {
-        select:{
+        select: {
           id: true,
           name: true,
           price: true,
-          amount: true
-        }
-      }
+          amount: true,
+        },
+      },
     },
   });
 

@@ -32,9 +32,13 @@ export const createUser = async (req: Request, res: Response) => {
       name,
       email,
       password: hashPassword,
-      Access: {
-        connect: {
-          name: accessName,
+      userAccess: {
+        create: {
+          Access: {
+            connect: {
+              name: accessName,
+            },
+          },
         },
       },
     },
@@ -42,13 +46,44 @@ export const createUser = async (req: Request, res: Response) => {
       id: true,
       name: true,
       email: true,
-      Access: {
-        select: {
-          name: true,
-        },
-      },
+      userAccess:{
+        select:{
+          Access:{
+            select:{
+              name:true
+            }
+          }
+        }
+      }
     },
   });
 
   return res.json(user);
 };
+
+
+export const deleteAllUsers = async (req:Request, res:Response)=>{
+  prisma.user.deleteMany()
+  return res.status(200).json({message: "Todos os usuarios foram excluidos."})
+}
+
+export const getAllUsers = async (req:Request, res:Response)=>{
+  const users = await prisma.user.findMany({
+    select:{
+      id: true,
+      name:true,
+      email:true,
+      userAccess:{
+        select:{
+          Access:{
+            select:{
+              name:true
+            }
+          }
+        }
+      }
+    }
+  })
+
+  return res.status(200).json(users)
+}

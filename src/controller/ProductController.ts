@@ -3,24 +3,26 @@ import { prisma } from "../database/prisma";
 
 export const createProduct = async (req: Request, res: Response) => {
   const { name, price, amount } = req.body;
-  const {storeId} = req.params
+  const { storeId } = req.params;
 
   const product = await prisma.product.create({
-    data: { name, price, amount, Store:{
-      connect: {
-        id: storeId
-      }
-    } },
+    data: {
+      name,
+      price,
+      amount,
+      Store: {
+        connect: {
+          id: storeId,
+        },
+      },
+    },
   });
 
   return res.json(product);
 };
 
-
-
 export const getAllProducts = async (req: Request, res: Response) => {
-  
-    const products = await prisma.product.findMany()
-  
-    return res.json(products);
-  };
+  const products = await prisma.product.findMany();
+
+  return res.json(products);
+};

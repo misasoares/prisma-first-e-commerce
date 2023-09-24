@@ -4,11 +4,11 @@ import { hash } from "bcryptjs";
 
 export const createStore = async (req: Request, res: Response) => {
   const { name } = req.body;
-  const { userId } = req.params;
+  const { id } = req.user;
 
   const isUser = await prisma.user.findUnique({
     where: {
-      id: userId,
+      id,
     },
   });
 
@@ -21,7 +21,7 @@ export const createStore = async (req: Request, res: Response) => {
       name,
       User: {
         connect: {
-          id: userId,
+          id,
         },
       },
     },

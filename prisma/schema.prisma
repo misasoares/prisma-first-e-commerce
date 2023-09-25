@@ -11,14 +11,16 @@ datasource db {
 }
 
 model User {
-  id         String       @id @default(uuid())
-  name       String
-  email      String       @unique
-  password   String
-  userAccess UserAccess[]
-  store      Store[]
-  created_at DateTime     @default(now())
-  updated_at DateTime     @updatedAt
+  id              String       @id @default(uuid())
+  name            String
+  email           String       @unique
+  password        String
+  saler_as_buyer  Sale[]       @relation("buyer")
+  saler_as_seller Sale[]       @relation("seller")
+  userAccess      UserAccess[]
+  store           Store[]
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
 }
 
 model UserAccess {
@@ -43,14 +45,15 @@ model Access {
 }
 
 model Product {
-  id         String   @id @default(uuid())
-  name       String
-  price      Decimal
-  amount     Int
-  Store      Store?   @relation(fields: [storeId], references: [id])
-  storeId    String?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id          String        @id @default(uuid())
+  name        String
+  price       Float
+  amount      Int
+  Store       Store?        @relation(fields: [storeId], references: [id])
+  storeId     String?
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  SaleProduct SaleProduct[]
 }
 
 model Store {
@@ -61,4 +64,27 @@ model Store {
   userId     String?
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
+}
+
+model Sale {
+  id          String        @id @default(uuid())
+  total_value Float
+  Buyer       User?         @relation("buyer", fields: [buyerId], references: [id])
+  buyerId     String?
+  Seller      User?         @relation("seller", fields: [sellerId], references: [id])
+  sellerId    String?
+  SaleProduct SaleProduct[]
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+}
+
+model SaleProduct {
+  id         String   @id @default(uuid())
+  quantity   Int
+  Sale       Sale     @relation(fields: [saleId], references: [id])
+  saleId     String
+  Product    Product  @relation(fields: [productId], references: [id])
+  productId  String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }

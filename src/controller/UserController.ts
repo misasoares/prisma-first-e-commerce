@@ -124,6 +124,12 @@ export const getUniqueUser = async (req: Request, res: Response) => {
             },
           },
         },
+        store: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     });
 
@@ -131,8 +137,6 @@ export const getUniqueUser = async (req: Request, res: Response) => {
       return res.status(204);
     }
     return res.status(200).json(user);
-    {
-      return;
-    }
+
   } catch (error) {}
 };

@@ -3,9 +3,10 @@ import { Router } from "express";
 import { createUser, deleteAllUsers, getAllUsers, getUniqueUser } from "./controller/UserController";
 import { createAccess, getAllAccesses } from "./controller/AccessController";
 import { createStore, getAllStore } from "./controller/StoreController";
-import { createProduct } from "./controller/ProductController";
+import { createProduct, getAllProducts } from "./controller/ProductController";
 import { signIn } from "./controller/SessionController";
 import { authMiddleware } from "./middleware/AuthMiddleware";
+import { createSale } from "./controller/SaleController";
 
 export const router = Router();
 
@@ -21,5 +22,8 @@ router.post("/store", authMiddleware(["adm", "Vendedor"]), createStore);
 router.get("/stores", getAllStore);
 
 router.post("/product/:storeId", authMiddleware(["adm", "Vendedor"]), createProduct);
+router.get("/products", authMiddleware(["adm", "Vendedor", "Comprador"]), getAllProducts);
+
+router.post('/create-sale',authMiddleware(["adm", "Vendedor", "Cliente"]) ,createSale)
 
 router.post("/sign-in", signIn);
